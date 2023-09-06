@@ -18,9 +18,21 @@
     width: calc(75vh *.70);
 }
 
-.display {
+.display-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     background-color: white;
     border-radius: 0.5rem;
+    font-size: 3rem;
+    align-items: right;
+    padding-right: 1rem;
+}
+
+.display {
+    display: flex;
+    justify-content: right;
+    /* background-color: aqua; */
 }
 
 .input-buttons {
