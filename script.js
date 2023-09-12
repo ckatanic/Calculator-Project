@@ -1,34 +1,76 @@
-let firstInput="";
-let secondInput="";
-let process = "";
+let calculator = {
+    primaryNumber: "",
+    secondaryNumber: "",
+    operator: "",
 
-const currentDisplay = document.getElementById('current-display');
+    updateDisplay: function() {
+        primaryNumberDisplay.innerText = this.primaryNumber;
+        secondaryNumberDisplay.innerText = this.secondaryNumber;
+    },
 
-document.getElementById('7').addEventListener('click', () => {
-    if (process === "") {
-        firstInput+=7;
-        currentDisplay.innerText=firstInput;
-    } else {
-        secondInput+=7;
-        currentDisplay.innerText+='7';
+    updateNumber: function(number) {
+        // updates primary display number 
+    },
+
+    delete: function() {
+        //deletes last number in primary display
+    },
+
+    updateOperator(input) {
+        calculator.operator = input;
+    },
+
+    calculate: function() {
+        //switch(case)
     }
-    
-    console.log("First: " + firstInput);
-    
-    console.log("Second: " + secondInput);
-    console.log(process);
+
+
+
+}
+
+const primaryNumberDisplay = document.getElementById('primaryDisplay');
+const secondaryNumberDisplay = document.getElementById('secondaryDisplay');
+
+let buttons = document.querySelectorAll('.button');
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        console.log(e.srcElement.innerText);
+    })
+})
+
+document.getElementById('clear').addEventListener('click', () => {
+    firstInput="";
+    secondInput="";
+    operator = "";
+    calculator.updateDisplay();
 })
 
 document.getElementById('+').addEventListener('click', () => {
-    process = "+";
-    currentDisplay.innerText+='+';
+    operator = "+";
+    calculator.updateDisplay();
+})
+document.getElementById('-').addEventListener('click', () => {
+    operator = "-";
+    calculator.updateDisplay();
+})
+document.getElementById('x').addEventListener('click', () => {
+    operator = "x";
+    calculator.updateDisplay();
+})
+document.getElementById('/').addEventListener('click', () => {
+    operator = "/";
+    calculator.updateDisplay();
 })
 
 document.getElementById('=').addEventListener('click', () => {
-    if (process === '+') {
+    if (operator === '+') {
         currentDisplay.innerText = parseInt(firstInput) + parseInt(secondInput);
+    } else if (operator === "-") {
+        currentDisplay.innerText = parseInt(firstInput)-parseInt(secondInput)
+    } else if (operator === "x") {
+        currentDisplay.innerText = parseInt(firstInput) * parseInt(secondInput)
+    } else if (operator === "/") {
+        currentDisplay.innerText = parseInt(firstInput) / parseInt(secondInput)
     }
 })
-
- 
 

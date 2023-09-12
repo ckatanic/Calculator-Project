@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: sans-serif;
 }
 
 .calculator-container {
@@ -24,16 +25,23 @@
     justify-content: space-around;
     background-color: white;
     border-radius: 0.5rem;
-    font-size: 3rem;
+    font-size: 4rem;
     align-items: right;
-    padding-right: 1rem;
+    padding-right: 1.5rem;
 }
 
 .display {
     display: flex;
     justify-content: right;
-    /* background-color: aqua; */
 }
+
+#secondaryDisplay {
+    font-size: 2rem;
+    color: #666;
+    padding-right: 3px;
+}
+
+
 
 .input-buttons {
     display: grid;
