@@ -16,12 +16,20 @@ let calculator = {
         if (number === '.' && this.primaryNumber.includes('.')) {
             return;
         }
+        if (this.secondaryNumber.includes ("=")) {
+            this.clear();
+        }
         this.primaryNumber = this.primaryNumber + number;
         this.updateDisplay();
     },
 
     delete: function() {
         //deletes last number in primary display
+        if (this.secondaryNumber.includes('=')) {
+            return;
+        }
+        this.primaryNumber = this.primaryNumber.slice(0, -1);
+        this.updateDisplay();
     },
 
     updateOperator(operator) {
@@ -53,28 +61,22 @@ let calculator = {
         if (this.secondaryNumber.includes("=")) {
             return;
         }
+        this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
         switch(calculator.operator) {
             case "x":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
                 this.primaryNumber = (parseFloat(this.primaryNumber) * parseFloat(this.secondaryNumber));
-                this.updateDisplay();
                 break;
             case "+":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
                 this.primaryNumber = (parseFloat(this.primaryNumber) + parseFloat(this.secondaryNumber));
-                this.updateDisplay();
                 break;
             case "-":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
                 this.primaryNumber = (parseFloat(this.secondaryNumber) - parseFloat(this.primaryNumber));
-                this.updateDisplay();
                 break;
             case "/":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
                 this.primaryNumber = (parseFloat(this.secondaryNumber) / parseFloat(this.primaryNumber));
-                this.updateDisplay();
                 break;
     }
+    this.updateDisplay();
     },
     reverse: function() {
         this.primaryNumber = -parseFloat(this.primaryNumber);
@@ -96,7 +98,6 @@ document.getElementById('clear').addEventListener('click', () => {
 let numberButtons = document.querySelectorAll('.numberButton');
 numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        console.log(button.innerText);
         calculator.appendNumber(button.innerText);
     })
 })
@@ -115,5 +116,9 @@ document.getElementById('=').addEventListener('click', () => {
 
 document.getElementById('+/-').addEventListener('click', () => {
     calculator.reverse();
+})
+
+document.getElementById('delete').addEventListener('click', () => {
+    calculator.delete();
 })
 
