@@ -4,22 +4,20 @@ let calculator = {
     operator: undefined,
 
     updateDisplay: function() {
-        primaryNumberDisplay.innerText = this.primaryNumber;
         secondaryNumberDisplay.innerText = this.secondaryNumber;
+        if (typeof(this.primaryNumber) === 'number') {
+            primaryNumberDisplay.innerText = +parseFloat(this.primaryNumber).toFixed(6);
+            return;
+        } 
+            primaryNumberDisplay.innerText = this.primaryNumber;
     },
-
-    appendNumber: function(number) {
-        // updates primary display number
-        // if (this.operator == undefined) {
-        //     this.primaryNumber = this.primaryNumber + number;
-        //     this.updateDisplay();
-        // } else {
-            this.primaryNumber = this.primaryNumber + number;
-            this.updateDisplay();
-        // }
-
-
         
+    appendNumber: function(number) {
+        if (number === '.' && this.primaryNumber.includes('.')) {
+            return;
+        }
+        this.primaryNumber = this.primaryNumber + number;
+        this.updateDisplay();
     },
 
     delete: function() {
@@ -27,12 +25,20 @@ let calculator = {
     },
 
     updateOperator(operator) {
-        // if (this.primaryNumber !== '') {
-            this.operator = operator;
+        this.operator = operator;
+        if (this.primaryNumber === "" && this.secondaryNumber === '') {
+            return;
+        } else if (this.secondaryNumber.includes ("=")) {
             this.secondaryNumber = `${this.primaryNumber} ${this.operator}`;
             this.primaryNumber = '';
             this.updateDisplay();
-        // }
+            return;
+        } else {
+        this.operator = operator;
+        this.secondaryNumber = `${this.primaryNumber} ${this.operator}`;
+        this.primaryNumber = '';
+        this.updateDisplay();
+        }
     },
 
     clear: function () {
@@ -44,29 +50,36 @@ let calculator = {
 
     calculate: function() {
         //switch(case)
+        if (this.secondaryNumber.includes("=")) {
+            return;
+        }
         switch(calculator.operator) {
             case "x":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber}`;
-                this.primaryNumber = (parseInt(this.primaryNumber) * parseInt(this.secondaryNumber));
+                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
+                this.primaryNumber = (parseFloat(this.primaryNumber) * parseFloat(this.secondaryNumber));
                 this.updateDisplay();
                 break;
             case "+":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber}`;
-                this.primaryNumber = (parseInt(this.primaryNumber) + parseInt(this.secondaryNumber));
+                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
+                this.primaryNumber = (parseFloat(this.primaryNumber) + parseFloat(this.secondaryNumber));
                 this.updateDisplay();
                 break;
             case "-":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber}`;
-                this.primaryNumber = (parseInt(this.secondaryNumber) - parseInt(this.primaryNumber));
+                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
+                this.primaryNumber = (parseFloat(this.secondaryNumber) - parseFloat(this.primaryNumber));
                 this.updateDisplay();
                 break;
             case "/":
-                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber}`;
-                this.primaryNumber = (parseInt(this.secondaryNumber) / parseInt(this.primaryNumber));
+                this.secondaryNumber = `${this.secondaryNumber} ${this.primaryNumber} =`;
+                this.primaryNumber = (parseFloat(this.secondaryNumber) / parseFloat(this.primaryNumber));
                 this.updateDisplay();
                 break;
     }
     },
+    reverse: function() {
+        this.primaryNumber = -parseFloat(this.primaryNumber);
+        this.updateDisplay();
+    }
 
 
 
@@ -97,15 +110,10 @@ operatorButtons.forEach((button) => {
 })
 
 document.getElementById('=').addEventListener('click', () => {
-    // if (operator === '+') {
-    //     currentDisplay.innerText = parseInt(firstInput) + parseInt(secondInput);
-    // } else if (operator === "-") {
-    //     currentDisplay.innerText = parseInt(firstInput)-parseInt(secondInput)
-    // } else if (operator === "x") {
-    //     currentDisplay.innerText = parseInt(firstInput) * parseInt(secondInput)
-    // } else if (operator === "/") {
-    //     currentDisplay.innerText = parseInt(firstInput) / parseInt(secondInput)
-    // }
     calculator.calculate();
+})
+
+document.getElementById('+/-').addEventListener('click', () => {
+    calculator.reverse();
 })
 
